@@ -1,0 +1,983 @@
+<title>Avadhscart — Smart Shopping Cart</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --bg: #fafaf9;
+  --bg-alt: #f5f3f0;
+  --bg-hero: #0c1018;
+  --bg-dark: #0e1220;
+  --text: #1a1a1a;
+  --text-sec: #5c5c5c;
+  --text-on-dark: #f0f0f0;
+  --text-on-dark-sec: #9ca3af;
+  --accent: #e85d2a;
+  --accent-deep: #c44d22;
+  --accent-light: #fef0ea;
+  --accent-glow: #ff7a47;
+  --green: #16a34a;
+  --green-light: #dcfce7;
+  --amber: #ca8a04;
+  --amber-light: #fef9c3;
+  --border: #e5e2de;
+  --card: #ffffff;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+  --radius: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1117;
+    --bg-alt: #161822;
+    --bg-hero: #080a10;
+    --bg-dark: #0a0d16;
+    --text: #e5e5e5;
+    --text-sec: #8a8a8a;
+    --text-on-dark: #f0f0f0;
+    --text-on-dark-sec: #9ca3af;
+    --accent: #ff7a47;
+    --accent-deep: #e85d2a;
+    --accent-light: #2a1810;
+    --accent-glow: #ff9b6f;
+    --green: #4ade80;
+    --green-light: #0d2818;
+    --amber: #facc15;
+    --amber-light: #3b2e0a;
+    --border: #222430;
+    --card: #1a1c28;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.25);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1117;
+  --bg-alt: #161822;
+  --bg-hero: #080a10;
+  --bg-dark: #0a0d16;
+  --text: #e5e5e5;
+  --text-sec: #8a8a8a;
+  --text-on-dark: #f0f0f0;
+  --text-on-dark-sec: #9ca3af;
+  --accent: #ff7a47;
+  --accent-deep: #e85d2a;
+  --accent-light: #2a1810;
+  --accent-glow: #ff9b6f;
+  --green: #4ade80;
+  --green-light: #0d2818;
+  --amber: #facc15;
+  --amber-light: #3b2e0a;
+  --border: #222430;
+  --card: #1a1c28;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.25);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.35);
+  color-scheme: dark;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding-inline: 0;
+}
+
+/* ── NAV ── */
+.nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  background: rgba(12,16,24,0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 16px;
+}
+.nav-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+.logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #fff;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.logo-icon {
+  width: 28px; height: 28px;
+  background: var(--accent);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #fff;
+}
+.logo span { color: var(--accent-glow); }
+.nav-links { display: flex; gap: 24px; align-items: center; }
+.nav-links a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: #fff; }
+.nav-cta {
+  background: var(--accent) !important;
+  color: #fff !important;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+}
+.nav-cta:hover { background: var(--accent-deep) !important; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--bg-hero);
+  padding: 100px 16px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(ellipse, rgba(232,93,42,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 780px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-glow);
+  margin-bottom: 28px;
+  background: rgba(232,93,42,0.1);
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(232,93,42,0.2);
+}
+.hero-badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.4rem, 6vw, 3.8rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  margin-bottom: 20px;
+}
+.hero h1 .grad {
+  background: linear-gradient(135deg, var(--accent-glow), #f9a03f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 1.08rem;
+  color: var(--text-on-dark-sec);
+  max-width: 560px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+.hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-deep); }
+.btn-ghost { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.12); }
+.btn-ghost:hover { background: rgba(255,255,255,0.14); }
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 48px;
+  padding-top: 36px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.hero-stat { text-align: center; }
+.hero-stat .val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.hero-stat .lbl {
+  font-size: 0.72rem;
+  color: var(--text-on-dark-sec);
+  margin-top: 2px;
+}
+
+/* ── SECTIONS SHARED ── */
+section { padding: 80px 16px; }
+.sec-inner { max-width: 1080px; margin: 0 auto; }
+.sec-header { text-align: center; max-width: 640px; margin: 0 auto 48px; }
+.sec-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.sec-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+.sec-desc {
+  font-size: 0.95rem;
+  color: var(--text-sec);
+  line-height: 1.75;
+}
+
+/* ── VIDEO ── */
+.video-sec { background: var(--bg); padding: 0 16px 80px; }
+.video-card {
+  max-width: 800px;
+  margin: -48px auto 0;
+  position: relative;
+  z-index: 2;
+  background: var(--card);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--border);
+}
+.video-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+.video-embed iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+.video-bar {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.video-bar-text {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.video-bar-text span { color: var(--text-sec); font-weight: 400; }
+.video-links { display: flex; gap: 10px; }
+.video-link {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: var(--accent-light);
+  transition: opacity 0.15s;
+}
+.video-link:hover { opacity: 0.8; }
+
+/* ── ABOUT ── */
+.about-sec { background: var(--bg); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.about-text h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.about-text p {
+  font-size: 0.9rem;
+  color: var(--text-sec);
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+.about-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.about-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: var(--accent-light);
+  color: var(--accent);
+}
+.about-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.about-fact {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+.about-fact .af-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 2px;
+}
+.about-fact .af-lbl {
+  font-size: 0.76rem;
+  color: var(--text-sec);
+}
+
+/* ── PRODUCT FEATURES ── */
+.features-sec { background: var(--bg-alt); }
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.f-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  box-shadow: var(--shadow-sm);
+}
+.f-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+}
+.f-card:nth-child(1) .f-icon { background: #fef0ea; color: #e85d2a; }
+.f-card:nth-child(2) .f-icon { background: #dcfce7; color: #16a34a; }
+.f-card:nth-child(3) .f-icon { background: #dbeafe; color: #2563eb; }
+.f-card:nth-child(4) .f-icon { background: #fef9c3; color: #ca8a04; }
+.f-card:nth-child(5) .f-icon { background: #f3e8ff; color: #9333ea; }
+.f-card:nth-child(6) .f-icon { background: #fce7f3; color: #db2777; }
+.f-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.f-card p {
+  font-size: 0.82rem;
+  color: var(--text-sec);
+  line-height: 1.65;
+}
+
+/* ── HOW IT WORKS ── */
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.how-step {
+  background: var(--card);
+  padding: 32px 24px;
+}
+.how-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0.25;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+.how-step h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.how-step p {
+  font-size: 0.82rem;
+  color: var(--text-sec);
+  line-height: 1.65;
+}
+
+/* ── SPECS ── */
+.specs-sec { background: var(--bg-dark); color: var(--text-on-dark); padding: 80px 16px; }
+.specs-sec .sec-tag { color: var(--accent-glow); }
+.specs-sec .sec-desc { color: var(--text-on-dark-sec); }
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2px;
+  background: rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.spec-item {
+  background: var(--bg-dark);
+  padding: 28px 22px;
+}
+.spec-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+.spec-label {
+  font-size: 0.76rem;
+  color: var(--text-on-dark-sec);
+  line-height: 1.5;
+}
+
+/* ── FOR RETAILERS ── */
+.retail-sec { background: var(--bg-alt); }
+.retail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.r-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  box-shadow: var(--shadow-sm);
+}
+.r-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+}
+.r-card:nth-child(1) .r-icon { background: #fef0ea; color: #e85d2a; }
+.r-card:nth-child(2) .r-icon { background: #dcfce7; color: #16a34a; }
+.r-card:nth-child(3) .r-icon { background: #dbeafe; color: #2563eb; }
+.r-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.r-card p {
+  font-size: 0.82rem;
+  color: var(--text-sec);
+  line-height: 1.65;
+}
+
+/* ── TIMELINE ── */
+.tl-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  position: relative;
+}
+.tl-track::before {
+  content: '';
+  position: absolute;
+  top: 14px; left: 14px; right: 14px;
+  height: 2px;
+  background: var(--border);
+}
+.tl-node { position: relative; padding-top: 36px; }
+.tl-node::before {
+  content: '';
+  position: absolute;
+  top: 7px; left: 0;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 3px solid var(--bg);
+  z-index: 1;
+}
+.tl-node.done::before { background: var(--green); }
+.tl-node.active::before { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-light); }
+.tl-node.future::before { background: var(--border); }
+.tl-date {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.tl-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.tl-sub {
+  font-size: 0.78rem;
+  color: var(--text-sec);
+  line-height: 1.5;
+}
+
+/* ── CTA ── */
+.cta-sec {
+  background: var(--bg-hero);
+  padding: 80px 16px;
+  text-align: center;
+}
+.cta-inner { max-width: 600px; margin: 0 auto; }
+.cta-sec h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+  margin-bottom: 14px;
+  text-wrap: balance;
+}
+.cta-sec p {
+  font-size: 0.95rem;
+  color: var(--text-on-dark-sec);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+.cta-email {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--accent-glow);
+  margin-bottom: 28px;
+  letter-spacing: -0.01em;
+  user-select: all;
+}
+.cta-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 36px;
+  text-align: left;
+}
+.cta-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 20px;
+}
+.cta-card .cc-label {
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-glow);
+  margin-bottom: 4px;
+}
+.cta-card .cc-val {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+.cta-card .cc-sub {
+  font-size: 0.78rem;
+  color: var(--text-on-dark-sec);
+}
+
+/* ── FOOTER ── */
+.foot {
+  background: var(--bg-dark);
+  padding: 24px 16px;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.foot p {
+  font-size: 0.72rem;
+  color: var(--text-on-dark-sec);
+}
+.foot a {
+  color: var(--accent-glow);
+  text-decoration: none;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .nav-links a:not(.nav-cta) { display: none; }
+  .hero { padding: 72px 16px 64px; }
+  .hero-stats { gap: 24px; }
+  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  .features-grid, .retail-grid { grid-template-columns: 1fr; }
+  .how-grid { grid-template-columns: 1fr 1fr; }
+  .tl-track { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .tl-track::before { display: none; }
+  .tl-node { padding-top: 0; padding-left: 28px; }
+  .tl-node::before { top: 2px; }
+  .cta-details { grid-template-columns: 1fr; }
+  .specs-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .how-grid { grid-template-columns: 1fr; }
+  .specs-grid { grid-template-columns: 1fr; }
+  section { padding: 56px 16px; }
+}
+</style>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">&#9655;</div>
+      avadhscart
+    </a>
+    <div class="nav-links">
+      <a href="#product">Product</a>
+      <a href="#retailers">For Retailers</a>
+      <a href="#progress">Progress</a>
+      <a href="#contact" class="nav-cta">Get in Touch</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span> Made in India &mdash; Launching December 2026</div>
+    <h1>The smart cart that<br><span class="grad">replaces checkout</span></h1>
+    <p class="hero-sub">Avadh Dash Cart scans, weighs, picks, sorts, and bags every item autonomously &mdash; inside the cart &mdash; while the shopper walks the aisles. No cashier. No self-scan. No queue.</p>
+    <div class="hero-actions">
+      <a href="#demo" class="btn btn-primary">&#9654;&ensp;Watch Demo</a>
+      <a href="#contact" class="btn btn-ghost">Partner With Us</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="val">3</div>
+        <div class="lbl">Patents Granted</div>
+      </div>
+      <div class="hero-stat">
+        <div class="val">150L</div>
+        <div class="lbl">Standard Cart Size</div>
+      </div>
+      <div class="hero-stat">
+        <div class="val">20 kg</div>
+        <div class="lbl">Payload Capacity</div>
+      </div>
+      <div class="hero-stat">
+        <div class="val">&lt;40 dB</div>
+        <div class="lbl">Operating Noise</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<div class="video-sec" id="demo">
+  <div class="video-card">
+    <div class="video-embed">
+      <iframe src="https://www.youtube.com/embed/FsRX-6Sk3mU" title="Avadh Dash Cart Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="video-bar">
+      <div class="video-bar-text">Full Autonomous Journey <span>&mdash; scan, weigh, pick, sort, display</span></div>
+      <div class="video-links">
+        <a href="https://youtu.be/CiMlLhmwNiM" target="_blank" rel="noopener" class="video-link">Phase 1 Build</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about-sec" id="about">
+  <div class="sec-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="sec-tag">About Avadhscart</div>
+        <h3>Building the future of retail from Jabalpur, India</h3>
+        <p>Avadhscart Private Limited is a deep-tech robotics company building autonomous shopping cart technology. We eliminate the checkout process entirely &mdash; no cashier lanes, no self-checkout kiosks, no scan-and-go apps.</p>
+        <p>Our patented system uses a 3-axis Cartesian gantry, dual cameras, and real-time weight verification to process every item as the shopper drops it in. The result: zero queues, zero shrinkage gaps, and a shopping experience that ends when the shopper decides to leave.</p>
+        <div class="about-tags">
+          <span class="about-tag">Robotics</span>
+          <span class="about-tag">Computer Vision</span>
+          <span class="about-tag">Retail Tech</span>
+          <span class="about-tag">Made in India</span>
+        </div>
+      </div>
+      <div class="about-facts">
+        <div class="about-fact">
+          <div class="af-val">2026</div>
+          <div class="af-lbl">Founded</div>
+        </div>
+        <div class="about-fact">
+          <div class="af-val">3</div>
+          <div class="af-lbl">Patents (US, EU, India)</div>
+        </div>
+        <div class="about-fact">
+          <div class="af-val">1</div>
+          <div class="af-lbl">Working Prototype</div>
+        </div>
+        <div class="about-fact">
+          <div class="af-val">Dec &rsquo;26</div>
+          <div class="af-lbl">Pilot Launch Target</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT FEATURES -->
+<section class="features-sec" id="product">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <div class="sec-tag">Product</div>
+      <h2 class="sec-title">What the Avadh Dash Cart does</h2>
+      <p class="sec-desc">A fully autonomous checkout system embedded inside a standard-sized shopping cart.</p>
+    </div>
+    <div class="features-grid">
+      <div class="f-card">
+        <div class="f-icon">&#9881;</div>
+        <h3>Robotic Pick &amp; Place</h3>
+        <p>3-axis Cartesian gantry with soft-grip Fin-Ray fingers picks, sorts, and places every item into the right bin automatically.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon">&#9878;</div>
+        <h3>Real-Time Verification</h3>
+        <p>Dual camera system + barcode scanner + load cell. Every item is identified, weighed, and cross-checked against the product catalog.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon">&#128247;</div>
+        <h3>Dual Camera Vision</h3>
+        <p>Overhead gantry camera for precise pick coordinates. Intake camera for item identification and barcode reading.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon">&#9889;</div>
+        <h3>Battery Powered</h3>
+        <p>12V LiFePO4 battery provides 8+ hours of operation. Plug-in charging between shifts. No trailing cables.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon">&#128296;</div>
+        <h3>Enclosed &amp; Silent</h3>
+        <p>Fully opaque enclosure &mdash; shoppers never see the gantry. Under 40 dB at 1m, quieter than a refrigerator.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-icon">&#128179;</div>
+        <h3>Digital Checkout</h3>
+        <p>Running total on a built-in tablet display. Tap to pay via UPI, card, or wallet. Walk out. Done.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <div class="sec-tag">How It Works</div>
+      <h2 class="sec-title">Four steps. Zero scanning.</h2>
+      <p class="sec-desc">Drop your item in and keep shopping. The cart handles everything else.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="how-num">01</div>
+        <h3>Drop In</h3>
+        <p>Place any item into the intake area at the top. A conveyor draws it to the scanning station.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">02</div>
+        <h3>Scan + Weigh</h3>
+        <p>Camera and barcode scanner identify the item. Load cell verifies weight against catalog. Mismatches flagged instantly.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">03</div>
+        <h3>Pick + Sort</h3>
+        <p>Robotic gantry picks and places the item into the correct bin &mdash; fragile items separated, heavy items at the bottom.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">04</div>
+        <h3>Pay + Go</h3>
+        <p>Total updates live on the display. Pay via UPI, tap, or card. Walk out &mdash; no queue, no billing counter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section class="specs-sec">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <div class="sec-tag">Specifications</div>
+      <h2 class="sec-title" style="color:#fff">Built for Indian retail floors</h2>
+      <p class="sec-desc">Production cart designed for supermarket and hypermarket aisles. Enclosed, quiet, safe.</p>
+    </div>
+    <div class="specs-grid">
+      <div class="spec-item">
+        <div class="spec-val">&lt;40 dB</div>
+        <div class="spec-label">Noise at 1m &mdash; quieter than a household refrigerator</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-val">150L</div>
+        <div class="spec-label">Standard trolley form factor &mdash; fits any store aisle</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-val">20 kg</div>
+        <div class="spec-label">Grocery payload &mdash; typical weekly family shop</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-val">3 Axis</div>
+        <div class="spec-label">Cartesian gantry &mdash; X, Y, Z precision pick-and-place</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-val">12V</div>
+        <div class="spec-label">LiFePO4 battery &mdash; 8+ hour runtime, plug-in charging</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-val">2 Cam</div>
+        <div class="spec-label">Dual camera &mdash; overhead gantry + intake identification</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR RETAILERS -->
+<section class="retail-sec" id="retailers">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <div class="sec-tag">For Retailers</div>
+      <h2 class="sec-title">Every cart is a checkout lane</h2>
+      <p class="sec-desc">Deploy Avadh Dash Carts to eliminate checkout bottlenecks, cut shrinkage, and deliver a modern shopping experience.</p>
+    </div>
+    <div class="retail-grid">
+      <div class="r-card">
+        <div class="r-icon">&#9881;</div>
+        <h3>Eliminate Billing Counters</h3>
+        <p>No cashiers needed per cart. Each cart processes its own items. Redeploy billing staff to the floor, stocking, or customer service.</p>
+      </div>
+      <div class="r-card">
+        <div class="r-icon">&#9878;</div>
+        <h3>Reduce Shrinkage</h3>
+        <p>Every item is barcode-scanned, weighed, and verified before entering the basket. Weight mismatches and unscanned items are flagged in real-time.</p>
+      </div>
+      <div class="r-card">
+        <div class="r-icon">&#9733;</div>
+        <h3>Faster Throughput</h3>
+        <p>No queues, no waiting, no festival-season billing jams. Checkout happens continuously as the shopper shops. Walk out when done.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRESS -->
+<section id="progress">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <div class="sec-tag">Progress</div>
+      <h2 class="sec-title">From prototype to pilot</h2>
+      <p class="sec-desc">Working prototype validated. Production cart in fabrication. Pilot launch targeted for December 2026.</p>
+    </div>
+    <div class="tl-track">
+      <div class="tl-node done">
+        <div class="tl-date">Sep 2026</div>
+        <div class="tl-label">Prototype Complete</div>
+        <div class="tl-sub">Full autonomous journey &mdash; intake, scan, weigh, pick, sort, display. End-to-end on bench hardware.</div>
+      </div>
+      <div class="tl-node done">
+        <div class="tl-date">Oct 2026</div>
+        <div class="tl-label">Patents Approved</div>
+        <div class="tl-sub">Core technology patented in the US, EU, and India. All three markets secured.</div>
+      </div>
+      <div class="tl-node active">
+        <div class="tl-date">Oct &ndash; Nov 2026</div>
+        <div class="tl-label">Production Cart</div>
+        <div class="tl-sub">CAD design + fabrication. Enclosed aluminium + steel cart with integrated gantry and electronics.</div>
+      </div>
+      <div class="tl-node future">
+        <div class="tl-date">Dec 2026</div>
+        <div class="tl-label">Pilot Launch</div>
+        <div class="tl-sub">Production-ready cart deployed for in-store pilot with retail partners in India.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA / CONTACT -->
+<section class="cta-sec" id="contact">
+  <div class="cta-inner">
+    <h2>Let's bring this to your stores</h2>
+    <p>We're looking for retail partners &mdash; supermarkets, hypermarkets, and modern trade chains &mdash; to deploy the Avadh Dash Cart. Start with a single-store pilot. We handle the hardware, software, and integration.</p>
+    <div class="cta-email">avadh@avadhscart.com</div>
+    <a href="mailto:avadh@avadhscart.com?subject=Avadh Dash Cart — Pilot Enquiry" class="btn btn-primary">Start a Conversation</a>
+    <div class="cta-details">
+      <div class="cta-card">
+        <div class="cc-label">Registered Office</div>
+        <div class="cc-val">Avadhscart Private Limited</div>
+        <div class="cc-sub">Jabalpur, Madhya Pradesh, India</div>
+      </div>
+      <div class="cta-card">
+        <div class="cc-label">Global Entity</div>
+        <div class="cc-val">Atharved Innovations Inc.</div>
+        <div class="cc-sub">Delaware, USA &mdash; <a href="https://atharved.com" target="_blank" rel="noopener" style="color:var(--accent-glow)">atharved.com</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <p>&copy; 2026 Avadhscart Private Limited &mdash; All rights reserved. &ensp;|&ensp; CIN: [To be updated] &ensp;|&ensp; <a href="https://atharved.com">atharved.com</a></p>
+</footer>
