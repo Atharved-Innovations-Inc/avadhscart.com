@@ -24,6 +24,8 @@
   --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
   --radius: 12px;
+  --emerald: #059669;
+  --emerald-light: #d1fae5;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -48,6 +50,8 @@
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
     --shadow-md: 0 4px 16px rgba(0,0,0,0.25);
     --shadow-lg: 0 8px 32px rgba(0,0,0,0.35);
+    --emerald: #34d399;
+    --emerald-light: #0d2818;
     color-scheme: dark;
   }
 }
@@ -73,6 +77,8 @@
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.25);
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.35);
+  --emerald: #34d399;
+  --emerald-light: #0d2818;
   color-scheme: dark;
 }
 
@@ -231,6 +237,8 @@ body {
 .btn-primary:hover { background: var(--accent-deep); }
 .btn-ghost { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.12); }
 .btn-ghost:hover { background: rgba(255,255,255,0.14); }
+.btn-emerald { background: var(--emerald); color: #fff; }
+.btn-emerald:hover { opacity: 0.9; }
 
 .hero-stats {
   display: flex;
@@ -333,62 +341,6 @@ section { padding: 80px 16px; }
   transition: opacity 0.15s;
 }
 .video-link:hover { opacity: 0.8; }
-
-/* ── ABOUT ── */
-.about-sec { background: var(--bg); }
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: center;
-}
-.about-text h3 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-.about-text p {
-  font-size: 0.9rem;
-  color: var(--text-sec);
-  line-height: 1.75;
-  margin-bottom: 20px;
-}
-.about-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-.about-tag {
-  font-size: 0.68rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 5px 12px;
-  border-radius: 6px;
-  background: var(--accent-light);
-  color: var(--accent);
-}
-.about-facts {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.about-fact {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
-}
-.about-fact .af-val {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-  margin-bottom: 2px;
-}
-.about-fact .af-lbl {
-  font-size: 0.76rem;
-  color: var(--text-sec);
-}
 
 /* ── PRODUCT FEATURES ── */
 .features-sec { background: var(--bg-alt); }
@@ -535,6 +487,137 @@ section { padding: 80px 16px; }
   line-height: 1.65;
 }
 
+/* ── RAISESTARTUP ── */
+.rs-sec { background: var(--bg); }
+.rs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.rs-text .sec-tag { text-align: left; color: var(--emerald); }
+.rs-text h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+.rs-text p {
+  font-size: 0.9rem;
+  color: var(--text-sec);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+.rs-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.rs-feat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+.rs-feat-icon {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+.rs-feat h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.rs-feat p {
+  font-size: 0.78rem;
+  color: var(--text-sec);
+  line-height: 1.55;
+}
+
+/* ── COMPANY ── */
+.company-sec { background: var(--bg-alt); }
+.company-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.company-text h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.company-text p {
+  font-size: 0.9rem;
+  color: var(--text-sec);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+.company-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.company-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: var(--accent-light);
+  color: var(--accent);
+}
+.company-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.cf-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+.cf-card .cf-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 2px;
+}
+.cf-card .cf-lbl {
+  font-size: 0.76rem;
+  color: var(--text-sec);
+}
+.company-entities { margin-top: 14px; }
+.entity-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.entity-card h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.entity-card p {
+  font-size: 0.78rem;
+  color: var(--text-sec);
+}
+.entity-card a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
 /* ── TIMELINE ── */
 .tl-track {
   display: grid;
@@ -642,6 +725,7 @@ section { padding: 80px 16px; }
   font-size: 0.78rem;
   color: var(--text-on-dark-sec);
 }
+.cta-card a { color: var(--accent-glow); text-decoration: none; }
 
 /* ── FOOTER ── */
 .foot {
@@ -664,7 +748,6 @@ section { padding: 80px 16px; }
   .nav-links a:not(.nav-cta) { display: none; }
   .hero { padding: 72px 16px 64px; }
   .hero-stats { gap: 24px; }
-  .about-grid { grid-template-columns: 1fr; gap: 32px; }
   .features-grid, .retail-grid { grid-template-columns: 1fr; }
   .how-grid { grid-template-columns: 1fr 1fr; }
   .tl-track { grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -673,10 +756,11 @@ section { padding: 80px 16px; }
   .tl-node::before { top: 2px; }
   .cta-details { grid-template-columns: 1fr; }
   .specs-grid { grid-template-columns: repeat(2, 1fr); }
+  .rs-grid, .company-grid { grid-template-columns: 1fr; gap: 32px; }
 }
 @media (max-width: 480px) {
   .how-grid { grid-template-columns: 1fr; }
-  .specs-grid { grid-template-columns: 1fr; }
+  .specs-grid, .company-facts, .rs-features { grid-template-columns: 1fr; }
   section { padding: 56px 16px; }
 }
 </style>
@@ -690,7 +774,7 @@ section { padding: 80px 16px; }
     </a>
     <div class="nav-links">
       <a href="#product">Product</a>
-      <a href="#retailers">For Retailers</a>
+      <a href="#company">Company</a>
       <a href="#progress">Progress</a>
       <a href="#contact" class="nav-cta">Get in Touch</a>
     </div>
@@ -743,50 +827,12 @@ section { padding: 80px 16px; }
   </div>
 </div>
 
-<!-- ABOUT -->
-<section class="about-sec" id="about">
-  <div class="sec-inner">
-    <div class="about-grid">
-      <div class="about-text">
-        <div class="sec-tag">About Avadhscart</div>
-        <h3>Building the future of retail from Jabalpur, India</h3>
-        <p>Avadhscart Private Limited is a deep-tech robotics company building autonomous shopping cart technology. We eliminate the checkout process entirely &mdash; no cashier lanes, no self-checkout kiosks, no scan-and-go apps.</p>
-        <p>Our patented system uses a 3-axis Cartesian gantry, dual cameras, and real-time weight verification to process every item as the shopper drops it in. The result: zero queues, zero shrinkage gaps, and a shopping experience that ends when the shopper decides to leave.</p>
-        <div class="about-tags">
-          <span class="about-tag">Robotics</span>
-          <span class="about-tag">Computer Vision</span>
-          <span class="about-tag">Retail Tech</span>
-          <span class="about-tag">Made in India</span>
-        </div>
-      </div>
-      <div class="about-facts">
-        <div class="about-fact">
-          <div class="af-val">2026</div>
-          <div class="af-lbl">Founded</div>
-        </div>
-        <div class="about-fact">
-          <div class="af-val">3</div>
-          <div class="af-lbl">Patents (US, EU, India)</div>
-        </div>
-        <div class="about-fact">
-          <div class="af-val">1</div>
-          <div class="af-lbl">Working Prototype</div>
-        </div>
-        <div class="about-fact">
-          <div class="af-val">Dec &rsquo;26</div>
-          <div class="af-lbl">Pilot Launch Target</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- PRODUCT FEATURES -->
 <section class="features-sec" id="product">
   <div class="sec-inner">
     <div class="sec-header">
-      <div class="sec-tag">Product</div>
-      <h2 class="sec-title">What the Avadh Dash Cart does</h2>
+      <div class="sec-tag">Avadh Dash Cart</div>
+      <h2 class="sec-title">What the cart does</h2>
       <p class="sec-desc">A fully autonomous checkout system embedded inside a standard-sized shopping cart.</p>
     </div>
     <div class="features-grid">
@@ -922,6 +968,99 @@ section { padding: 80px 16px; }
   </div>
 </section>
 
+<!-- RAISESTARTUP -->
+<section class="rs-sec" id="raisestartup">
+  <div class="sec-inner">
+    <div class="rs-grid">
+      <div class="rs-text">
+        <div class="sec-tag">Also From Avadhscart</div>
+        <h3>RaiseStartup &mdash; fundraising for startups</h3>
+        <p>Our SaaS platform helps founders raise capital faster. Track investors, manage your pipeline, automate outreach, and close your round &mdash; all in one place.</p>
+        <p>Indian startups get CA-fulfilled compliance services built in &mdash; valuations, regulatory filings, and due-diligence support. Pay in INR via Razorpay or USD via Stripe.</p>
+        <a href="https://raisestartup.io" target="_blank" rel="noopener" class="btn btn-emerald">Visit raisestartup.io &rarr;</a>
+      </div>
+      <div class="rs-features">
+        <div class="rs-feat">
+          <div class="rs-feat-icon">&#128200;</div>
+          <h4>Investor CRM</h4>
+          <p>Track every investor conversation, meeting, and commitment in one pipeline view.</p>
+        </div>
+        <div class="rs-feat">
+          <div class="rs-feat-icon">&#128231;</div>
+          <h4>Automated Outreach</h4>
+          <p>Targeted email campaigns to qualified investors. Track opens, replies, and conversions.</p>
+        </div>
+        <div class="rs-feat">
+          <div class="rs-feat-icon">&#128176;</div>
+          <h4>Payment Processing</h4>
+          <p>Razorpay for INR and Stripe for USD. Accept investment commitments and service payments.</p>
+        </div>
+        <div class="rs-feat">
+          <div class="rs-feat-icon">&#128221;</div>
+          <h4>CA Services</h4>
+          <p>Chartered accountant-fulfilled compliance, valuation, and regulatory filing for Indian startups.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPANY -->
+<section class="company-sec" id="company">
+  <div class="sec-inner">
+    <div class="sec-header">
+      <div class="sec-tag">Company</div>
+      <h2 class="sec-title">About Avadhscart Private Limited</h2>
+      <p class="sec-desc">A deep-tech company building products that remove friction from commerce &mdash; at the checkout counter and in the fundraising process.</p>
+    </div>
+    <div class="company-grid">
+      <div class="company-text">
+        <h3>Building the future of retail from Jabalpur, India</h3>
+        <p>Avadhscart Private Limited is the Indian operating entity of Atharved Innovations. We design, engineer, and manufacture autonomous shopping cart technology &mdash; and build software that helps startups raise capital.</p>
+        <p>Our patented Avadh Dash Cart uses a 3-axis Cartesian gantry, dual cameras, and real-time weight verification to process every item as the shopper drops it in. Our SaaS product RaiseStartup connects founders with investors and chartered accountants for end-to-end fundraising support.</p>
+        <p>Everything is built in-house &mdash; hardware, firmware, software, and payments &mdash; from our base in Jabalpur, Madhya Pradesh.</p>
+        <div class="company-tags">
+          <span class="company-tag">Robotics</span>
+          <span class="company-tag">Computer Vision</span>
+          <span class="company-tag">Retail Tech</span>
+          <span class="company-tag">SaaS</span>
+          <span class="company-tag">Made in India</span>
+        </div>
+      </div>
+      <div>
+        <div class="company-facts">
+          <div class="cf-card">
+            <div class="cf-val">2026</div>
+            <div class="cf-lbl">Founded</div>
+          </div>
+          <div class="cf-card">
+            <div class="cf-val">3</div>
+            <div class="cf-lbl">Patents (US, EU, India)</div>
+          </div>
+          <div class="cf-card">
+            <div class="cf-val">2</div>
+            <div class="cf-lbl">Live Products</div>
+          </div>
+          <div class="cf-card">
+            <div class="cf-val">Dec &rsquo;26</div>
+            <div class="cf-lbl">Cart Pilot Launch</div>
+          </div>
+        </div>
+        <div class="company-entities">
+          <div class="entity-card">
+            <h4>Avadhscart Private Limited</h4>
+            <p>Jabalpur, Madhya Pradesh, India &mdash; R&amp;D, manufacturing, Razorpay (INR)</p>
+          </div>
+          <div class="entity-card">
+            <h4>Atharved Innovations Inc.</h4>
+            <p>Delaware, USA &mdash; Global operations, Stripe (USD) &mdash; <a href="https://atharved.com">atharved.com</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PROGRESS -->
 <section id="progress">
   <div class="sec-inner">
@@ -959,9 +1098,9 @@ section { padding: 80px 16px; }
 <section class="cta-sec" id="contact">
   <div class="cta-inner">
     <h2>Let's bring this to your stores</h2>
-    <p>We're looking for retail partners &mdash; supermarkets, hypermarkets, and modern trade chains &mdash; to deploy the Avadh Dash Cart. Start with a single-store pilot. We handle the hardware, software, and integration.</p>
+    <p>Whether you're a retailer ready to eliminate billing counters, a startup raising capital, or an investor exploring deep-tech &mdash; we'd like to hear from you.</p>
     <div class="cta-email">avadh@avadhscart.com</div>
-    <a href="mailto:avadh@avadhscart.com?subject=Avadh Dash Cart — Pilot Enquiry" class="btn btn-primary">Start a Conversation</a>
+    <a href="mailto:avadh@avadhscart.com?subject=Avadhscart — Let's Talk" class="btn btn-primary">Start a Conversation</a>
     <div class="cta-details">
       <div class="cta-card">
         <div class="cc-label">Registered Office</div>
@@ -971,7 +1110,19 @@ section { padding: 80px 16px; }
       <div class="cta-card">
         <div class="cc-label">Global Entity</div>
         <div class="cc-val">Atharved Innovations Inc.</div>
-        <div class="cc-sub">Delaware, USA &mdash; <a href="https://atharved.com" target="_blank" rel="noopener" style="color:var(--accent-glow)">atharved.com</a></div>
+        <div class="cc-sub">Delaware, USA &mdash; <a href="https://atharved.com">atharved.com</a></div>
+      </div>
+    </div>
+    <div class="cta-details" style="margin-top:12px">
+      <div class="cta-card">
+        <div class="cc-label">Smart Cart</div>
+        <div class="cc-val">Avadh Dash Cart</div>
+        <div class="cc-sub">Pilot Dec 2026</div>
+      </div>
+      <div class="cta-card">
+        <div class="cc-label">Fundraising Platform</div>
+        <div class="cc-val">RaiseStartup</div>
+        <div class="cc-sub"><a href="https://raisestartup.io">raisestartup.io</a></div>
       </div>
     </div>
   </div>
@@ -979,5 +1130,5 @@ section { padding: 80px 16px; }
 
 <!-- FOOTER -->
 <footer class="foot">
-  <p>&copy; 2026 Avadhscart Private Limited &mdash; All rights reserved. &ensp;|&ensp; CIN: [To be updated] &ensp;|&ensp; <a href="https://atharved.com">atharved.com</a></p>
+  <p>&copy; 2026 Avadhscart Private Limited &mdash; All rights reserved. &ensp;|&ensp; <a href="https://atharved.com">atharved.com</a> &ensp;|&ensp; <a href="https://raisestartup.io">raisestartup.io</a></p>
 </footer>
